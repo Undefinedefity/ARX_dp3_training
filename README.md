@@ -15,5 +15,5 @@ $ mamba env create -f conda_environment.yaml
 ```shell
 $ conda activate robodiff
 $ wandb login
-$ python train.py --config-name=train_diffusion_transformer_hybrid_workspace.yaml
+$ python train.py --config-name=train_diffusion_unet_real_image_workspace.yaml
 ```
