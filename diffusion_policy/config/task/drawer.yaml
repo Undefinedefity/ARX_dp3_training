@@ -1,6 +1,6 @@
 name: drawer
 
-image_shape: &image_shape [3, 240, 320]
+image_shape: &image_shape [3, 224, 224]
 shape_meta: &shape_meta
   # acceptable types: rgb, low_dim
   obs:
