@@ -37,7 +37,7 @@ shape_meta: &shape_meta
 
 dataset:
   _target_: diffusion_policy.dataset.aloha_image_dataset.AlohaImageDataset
-  dataset_dir: /media/clear/CLEAR/dataset/train_data/real_drawer_240_320_10Hz
+  dataset_dir: /media/clear/CLEAR/dataset/train_data/real_drawer_224_224_10Hz
   shape_meta: *shape_meta
   num_episodes: 50
   horizon: ${horizon}
