@@ -97,13 +97,13 @@ class DiffusionUnetImagePolicy(BaseImagePolicy):
         model = self.model
         scheduler = self.noise_scheduler
 
-        # trajectory = torch.randn(
-        #     size=condition_data.shape, 
-        #     dtype=condition_data.dtype,
-        #     device=condition_data.device,
-        #     generator=generator)
+        trajectory = torch.randn(
+            size=condition_data.shape, 
+            dtype=condition_data.dtype,
+            device=condition_data.device,
+            generator=generator)
         
-        trajectory = torch.zeros_like(condition_data)
+        # trajectory = torch.zeros_like(condition_data)
     
         # set step values
         scheduler.set_timesteps(self.num_inference_steps)
