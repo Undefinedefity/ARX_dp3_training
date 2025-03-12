@@ -1,14 +1,9 @@
 ## Installation
 
-```console
-$ sudo apt install -y libosmesa6-dev libgl1-mesa-glx libglfw3 patchelf  
+```console 
 $ conda env create -f conda_environment.yaml
+$ conda activate robodiff
 ```
-
-## Path determination
-
-1. dataset_path in config/task
-2. task in config(workspace)
 
 ## Image Resizing
 
@@ -22,6 +17,18 @@ $ python resize_image.py --input_path /path/to/input --output_path /path/to/outp
 - `--output_path`: The base path where the resized images will be saved.
 - `--num_episodes`: The number of episodes to process.
 - `--target_size`: The target size for the images, specified as width and height.
+
+## Path determination
+
+1. **Task Configuration**: Modify the following parameters in `diffusion_policy/conf/task/{task_name}.yaml`:
+   - `image_shape`: Specify the shape of the images.
+   - `dataset_dir`: Set the directory for the dataset.
+   - `num_episodes`: Define the number of episodes to process.
+
+2. **Workspace Configuration**: Update these parameters in `diffusion_policy/conf/xxx_workspace.yaml`:
+   - `default.task`: Set the default task.
+   - `crop_shape`: Specify the crop shape, which should be smaller than the target size.
+   - `num_epochs`: Define the number of epochs for training.
 
 ## Training
 
