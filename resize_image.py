@@ -122,7 +122,7 @@ def parse_arguments():
     parser.add_argument('--input_path', type=str, required=True, help='输入数据集基础路径')
     parser.add_argument('--output_path', type=str, required=True, help='输出数据集基础路径')
     parser.add_argument('--num_episodes', type=int, required=True, help='需要处理的episode数量')
-    parser.add_argument('--target_size', type=int, nargs=2, default=(224, 224), help='目标图像尺寸，格式为: width height')
+    parser.add_argument('--target_size', type=int, nargs=2, default=(128, 128), help='目标图像尺寸，格式为: width height')
     
     return parser.parse_args()
 
