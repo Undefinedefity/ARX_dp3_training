@@ -10,7 +10,7 @@ $ conda activate robodiff
 To resize images stored in HDF5 files, use the `resize_image.py` script with the following command-line options:
 
 ```shell
-$ python resize_image.py --input_path /path/to/input --output_path /path/to/output --num_episodes 100 --target_size 128 128
+$ python resize_image.py --input_path /path/to/input --output_path /path/to/output --num_episodes 50 --target_size 128 128
 ```
 
 - `--input_path`: The base path to the input dataset.

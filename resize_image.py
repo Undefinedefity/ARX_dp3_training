@@ -15,12 +15,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class ImageResizer:
-    def __init__(self, target_size: Tuple[int, int] = (224, 224)):
+    def __init__(self, target_size: Tuple[int, int] = (128, 128)):
         """
         初始化图像处理器
         
         Args:
-            target_size: 目标图像尺寸，默认为(224, 224)
+            target_size: 目标图像尺寸，默认为(128, 128)
         """
         self.target_size = target_size
         
