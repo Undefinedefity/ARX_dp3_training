@@ -7,6 +7,8 @@ $ conda activate robodiff
 
 ## Image Resizing
 
+
+### Single Task
 To resize images stored in HDF5 files, use the `resize_image.py` script with the following command-line options:
 
 ```shell
@@ -14,9 +16,23 @@ $ python resize_image.py --input_path /path/to/input --output_path /path/to/outp
 ```
 
 - `--input_path`: The base path to the input dataset.
-- `--output_path`: The base path where the resized images will be saved.
+- `--output_path`: The base path where the resized dataset will be saved.
 - `--num_episodes`: The number of episodes to process.
 - `--target_size`: The target size for the images, specified as width and height.
+
+
+### Multi Tasks
+To resize images stored in HDF5 files, use the `resize_image_multi_tasks.py` script with the following command-line options:
+
+```shell
+$ python resize_image_multi_tasks.py --input_path /path/to/input --output_path /path/to/output --num_episodes 50 --target_size 128 128
+```
+
+- `--input_path`: The base path where all subtask directories are stored.
+- `--output_path`: The base path where the resized dataset will be saved.
+- `--num_episodes`: The number of episodes to process for each subtask.
+- `--target_size`: The target size for the images, specified as width and height.
+
 
 ## Path determination
 
