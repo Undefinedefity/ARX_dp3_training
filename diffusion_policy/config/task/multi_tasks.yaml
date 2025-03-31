@@ -1,0 +1,33 @@
+name: multi_tasks
+
+image_shape: &image_shape [3, 128, 128]
+shape_meta: &shape_meta
+  # acceptable types: rgb, low_dim
+  obs:
+    mid:
+      shape: *image_shape
+      type: rgb
+    right:
+      shape: *image_shape
+      type: rgb
+    qpos:
+      shape: [7]
+      type: low_dim
+    task_emb:
+      shape: [768]
+      type: low_dim
+  action:
+    shape: [7]
+
+dataset:
+  _target_: diffusion_policy.dataset.aloha_image_dataset.AlohaImageDataset
+  dataset_dir: /data/ouyangzikai/Data/ATM_real_data/ATM_0327_45_25mm_multi_tasks/demo_10
+  shape_meta: *shape_meta
+  num_episodes: 30
+  horizon: ${horizon}
+  pad_before: ${eval:'${n_obs_steps}-1'}
+  pad_after: ${eval:'${n_action_steps}-1'}
+  use_cache: True
+  seed: 42
+  val_ratio: 0.2
+  max_train_episodes: null

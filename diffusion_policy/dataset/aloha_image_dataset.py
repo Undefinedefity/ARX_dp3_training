@@ -145,7 +145,7 @@ class AlohaImageDataset(BaseImageDataset):
 
     def get_normalizer(self, mode="limits", **kwargs):
         normalizer = LinearNormalizer()
-        ## ??
+        
         # action
         stat = array_to_stats(self.replay_buffer["action"])
         this_normalizer = get_range_normalizer_from_stat(stat)
@@ -155,10 +155,13 @@ class AlohaImageDataset(BaseImageDataset):
         for key in self.lowdim_keys:
             stat = array_to_stats(self.replay_buffer[key])
 
-            if key.endswith("pos"):
+            if key == "task_emb":
+                # use identity normalizer for task embedding
+                this_normalizer = get_identity_normalizer_from_stat(stat)
+            elif key.endswith("pos"):
                 this_normalizer = get_range_normalizer_from_stat(stat)
             else:
-                raise RuntimeError("unsupported")
+                raise RuntimeError(f"Unsupported key: {key}")
             normalizer[key] = this_normalizer
 
         # image
