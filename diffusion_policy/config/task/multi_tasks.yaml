@@ -21,9 +21,9 @@ shape_meta: &shape_meta
 
 dataset:
   _target_: diffusion_policy.dataset.aloha_image_dataset.AlohaImageDataset
-  dataset_dir: /data/ouyangzikai/Data/ATM_real_data/ATM_0327_45_25mm_multi_tasks/demo_10
+  dataset_dir: /data/ouyangzikai/Data/ATM_real_data/ATM_0408_90_50mm_multi_tasks/demo_50
   shape_meta: *shape_meta
-  num_episodes: 30
+  num_episodes: 150
   horizon: ${horizon}
   pad_before: ${eval:'${n_obs_steps}-1'}
   pad_after: ${eval:'${n_action_steps}-1'}
