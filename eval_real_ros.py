@@ -1,7 +1,7 @@
 
 """
 Usage:
-(robodiff)$ python eval_real_robot.py -i <ckpt_path> -o <save_dir> --robot_ip <ip_of_ur5>
+(robodiff)$ python eval_real_robot.py -i <ckpt_path> -f <frequency> --s <steps_per_inference>
 
 ================ Human in control ==============
 Robot movement:
@@ -44,14 +44,14 @@ import scipy.spatial.transform as st
 
 
 from common.precise_sleep import precise_wait
-from utils.real_inference_utils import get_real_obs_resolution, get_real_obs_dict
+from real_world.real_inference_util import get_real_obs_resolution, get_real_obs_dict
 
-from codebase.diffusion_policy.diffusion_policy.common.pytorch_util import dict_apply
-from codebase.diffusion_policy.diffusion_policy.workspace.base_workspace import BaseWorkspace
-from codebase.diffusion_policy.diffusion_policy.policy.base_image_policy import BaseImagePolicy
-from utils.cv2_utils import get_image_transform
+from common.pytorch_util import dict_apply
+from workspace.base_workspace import BaseWorkspace
+from policy.base_image_policy import BaseImagePolicy
+from common.cv2_util import get_image_transform
 
-from codebase.shared_memory.shared_memory_ring_buffer import SharedMemoryRingBuffer
+from shared_memory.shared_memory_ring_buffer import SharedMemoryRingBuffer
 from multiprocessing.managers import SharedMemoryManager
 import rospy
 from message_filters import ApproximateTimeSynchronizer, Subscriber
@@ -68,7 +68,7 @@ np.set_printoptions(suppress=True)
 @click.command()
 @click.option(
     "--input_path",
-    "-ip",
+    "-i",
     required=True,
     help="Path to checkpoint",
 )
@@ -81,7 +81,7 @@ np.set_printoptions(suppress=True)
 )
 @click.option(
     "--steps_per_inference",
-    "-si",
+    "-s",
     default=8,
     type=int,
     help="Action horizon for inference.",
@@ -131,10 +131,8 @@ def main(
     shm_manager.start()
 
     examples = dict()
-    examples["mid"] = np.empty(shape=obs_res[::-1] + (3,), dtype=np.uint8)
-    examples["right"] = np.empty(shape=obs_res[::-1] + (3,), dtype=np.uint8)
-    examples["eef_qpos"] = np.empty(shape=(7,), dtype=np.float64)
-    examples["qpos"] = np.empty(shape=(7,), dtype=np.float64)
+    examples["point_cloud"] = np.empty(shape=obs_res[::-1] + (3,), dtype=np.uint8)
+    examples["agent_pos"] = np.empty(shape=(7,), dtype=np.float64)
     examples["timestamp"] = 0.0
     obs_ring_buffer = SharedMemoryRingBuffer.create_from_examples(
         shm_manager=shm_manager,
@@ -146,13 +144,11 @@ def main(
 
     # ros config
     rospy.init_node("eval_real_ros")
-    eef_qpos = Subscriber("follow2_pos_back", PosCmd)
-    qpos = Subscriber("joint_information2", JointInformation)
-    mid = Subscriber("mid_camera", Image)
-    right = Subscriber("right_camera", Image)
+    agent_pos = Subscriber("joint_information2", JointInformation)
+    depth = Subscriber("mid_depth_camera", Image)
     control_robot2 = rospy.Publisher("test_right", JointControl, queue_size=10)
     ats = ApproximateTimeSynchronizer(
-        [eef_qpos, qpos, mid, right], queue_size=10, slop=0.1
+        [agent_pos, depth], queue_size=10, slop=0.1
     )
     ats.registerCallback(callback)
     rate = rospy.Rate(frequency)
